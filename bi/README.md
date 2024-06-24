@@ -76,5 +76,46 @@ This script will automatically extract the contents of all .zip files including 
 ## fetch_glosarium.ipynb
 This script will fetch BI's glosarium page and return a .csv file
 
+# Naming Convention
+
+All in lowercase. No special characters except `-` and `_`. Dash (-) represents different section, underscore (_) represents space.
+
+Format: [type_of_regulation]-[number]-[date]-[title]
+
+## Type of Regulation
+
+Dependant on the column `type_of_regulation`
+
+Can be one of three values
+- pbi (Bank Indonesia Regulation)
+- padg (Member Of The Board Of Governors Regulation)
+- sebi (Bank Indonesia Circular Letters)
+
+## Number
+
+Dependant on the column `file_link`
+
+Example:
+- https://www.bi.go.id/en/publikasi/peraturan/Documents/08689150187e442b8067a66e1e52f030appendix_se_122511.pdf --> se122511
+- https://www.bi.go.id/en/publikasi/peraturan/Documents/PBI_062023_EN.pdf --> pbi062023
+
+## Date
+Dependant on the column `date`
+
+Example:
+- 16 February 2004 --> 16022004
+- 16 November 2023 --> 16112023
+
+## Title
+Dependant on the column `title`
+
+Take all characters until length is 250.
+
+Example:
+- BANK INDONESIA REGULATION NUMBER 12 OF 2023 ON ISSUANCE OF MONEY MARKET INSTRUMENTS AND MONEY MARKET TRANSACTIONS --> bank_indonesia_regulation_number_12_of_2023_on_issuance_of_money_market_instruments_and_money_market_transactions
+
+## Result
+pbi_pbi122023_16112023_bank_indonesia_regulation_number_12_of_2023_on_issuance_of_money_market_instruments_and_money_market_transactions.pdf
+
 # Contributors
 Arkan Alexei Andrei
