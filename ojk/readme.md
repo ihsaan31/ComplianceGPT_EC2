@@ -29,7 +29,6 @@ https://googlechromelabs.github.io/chrome-for-testing/
 2. Download [Data](https://drive.google.com/file/d/1VDX8MgyRVXNVGcB-plpaSoEcPGqUUqIw/view?usp=sharing) and extract in the root directory
 
 3. Run this command
-
 ```
 cd <path_to_repository>
 pip install -r requirements.txt
@@ -68,38 +67,43 @@ python main.py
     └── table_scraper.py
 ```
 
+## Utilities
+1. `setup_driver.py` : Setup the chrome driver for scraping
+2. `table_scraper.py` : Scraping the regulation table from the website [OJK](https://www.ojk.go.id/id/Regulasi/Default.aspx)
+3. `document_scraper.py` : Scraping and download the document from the website
+4. `filename_sanitizer.py` : Sanitize the filename of the downloaded document
 
 ## Documentation
 
 1. Code Preview
-<center>
+<div align='center >
 <img src="./documentation/code.png" width="500">
-</center>
+</div>
 
 2. Regulation Table Scraping Result
-<center>
+<div align='center >
 <img src="./documentation/regulation_table.png" width="500">
-</center>
+</div>
 
 3. Document Tracer
-<center>
+<div align='center >
 <img src="./documentation/document_tracer.png" width="500">
-</center>
+</div>
 
 4. Sanitized Document Tracer
-<center>
+<div align='center >
 <img src="./documentation/sanitized_csv.png" width="500">
-</center>
+</div>
 
 5. Downloaded File in Local
-<center>
+<div align='center >
 <img src="documentation/downloaded_file.png" width="500">
-</center>
+</div>
 
 6. Sanitized File in Local
-<center>
+<div align='center >
 <img src="documentation/sanitized_file.png" width="500">
-</center>
+</div>
 
 ## Contributors
 1. Abraham Megantoro Samudra
