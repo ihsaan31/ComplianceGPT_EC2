@@ -26,7 +26,7 @@ ojk-klasifikasi_bapepam-36_pmk_010_2008-26022008-peraturan_menteri_keuangan_nomo
 ```
 https://googlechromelabs.github.io/chrome-for-testing/
 ```
-3. Run this command
+2. Run this command
 ```
 cd <path_to_repository>
 pip install -r requirements.txt
