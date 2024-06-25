@@ -26,8 +26,6 @@ ojk-klasifikasi_bapepam-36_pmk_010_2008-26022008-peraturan_menteri_keuangan_nomo
 ```
 https://googlechromelabs.github.io/chrome-for-testing/
 ```
-2. Download [Data](https://drive.google.com/file/d/1VDX8MgyRVXNVGcB-plpaSoEcPGqUUqIw/view?usp=sharing) and extract in the root directory
-
 3. Run this command
 ```
 cd <path_to_repository>
@@ -66,6 +64,9 @@ python main.py
     ├── setup_driver.py
     └── table_scraper.py
 ```
+
+## Result 
+You can see the result of document files in [here](https://drive.google.com/file/d/1VDX8MgyRVXNVGcB-plpaSoEcPGqUUqIw/view?usp=sharing).
 
 ## Utilities
 1. `setup_driver.py` : Setup the chrome driver for scraping
