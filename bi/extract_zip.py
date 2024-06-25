@@ -1,8 +1,8 @@
 import os
-from glob import glob
 import zipfile
-from utils.utils import slugify
+from glob import glob
 
+from utils.utils import slugify
 
 extracted_dir = 'extracted_files'
 os.makedirs(extracted_dir, exist_ok=True)
@@ -21,8 +21,8 @@ for zpath in zfiles:
                 final_file_name = f"{zip_file_base}-{member_base_name}"
                 
                 # Ensure the path length limit
-                if len(final_file_name) > 255 - len(extracted_dir) - 1:
-                    final_file_name = final_file_name[:255 - len(extracted_dir) - 1]
+                if len(final_file_name) > 250 - len(extracted_dir) - 1:
+                    final_file_name = final_file_name[:250 - len(extracted_dir) - 1]
                 
                 target_path = os.path.join(extracted_dir, final_file_name)
                 with open(target_path, "wb") as target:

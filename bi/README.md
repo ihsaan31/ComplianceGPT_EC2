@@ -42,6 +42,7 @@ The scripts provided below allows users to scrape all regulations from Bank Indo
 ├── *.py
 ├── *.ipynb
 ├── README.md
+├── metadata.json
 └── requirements.txt
 ```
 
@@ -93,11 +94,10 @@ Can be one of three values
 
 ## Number
 
-Dependant on the column `file_link`
+Dependant on the column `title` and `type_of_regulation`
 
 Example:
-- https://www.bi.go.id/en/publikasi/peraturan/Documents/08689150187e442b8067a66e1e52f030appendix_se_122511.pdf --> se122511
-- https://www.bi.go.id/en/publikasi/peraturan/Documents/PBI_062023_EN.pdf --> pbi062023
+- `type_of_regulation is Bank Indonesia Regulation and title is BANK INDONESIA REGULATION NUMBER 24/7/PBI/2022 ON TRANSACTIONS... --> 24_7_pbi_2022
 
 ## Date
 Dependant on the column `date`
@@ -115,7 +115,7 @@ Example:
 - BANK INDONESIA REGULATION NUMBER 12 OF 2023 ON ISSUANCE OF MONEY MARKET INSTRUMENTS AND MONEY MARKET TRANSACTIONS --> bank_indonesia_regulation_number_12_of_2023_on_issuance_of_money_market_instruments_and_money_market_transactions
 
 ## Result
-pbi_pbi122023_16112023_bank_indonesia_regulation_number_12_of_2023_on_issuance_of_money_market_instruments_and_money_market_transactions.pdf
+pbi-24_7_pbi_2022-04072022-bank_indonesia_regulation_number_24_7_pbi_2022_on_transactions_in_foreign_exchange_market.pdf
 
 # Contributors
 Arkan Alexei Andrei

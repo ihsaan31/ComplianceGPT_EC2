@@ -1,10 +1,10 @@
 import pandas as pd
 import requests
 import os
+import random
+import string
 from urllib.parse import urlparse, unquote
-from utils.constants import DATA_FILE_PATH, UNSUCCESSFUL_DOWNLOADS_PATH
-from utils.utils import slugify
-
+from utils.constants import DATA_FINAL_PATH, UNSUCCESSFUL_DOWNLOADS_PATH
 
 def get_file_extension(url, headers):
     if 'Content-Disposition' in headers:
@@ -19,26 +19,27 @@ def get_file_extension(url, headers):
     
     return extension if extension else '.bin'
 
+def add_random_chars(filename, length=3):
+    random_chars = ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
+    base, ext = os.path.splitext(filename)
+    return f"{base}_{random_chars}{ext}"
 
-def remove_extension(file_name):
-    return os.path.splitext(file_name)[0]
-
-
-def download_file(file_link, file_name, max_retries=3):
-    base_file_name = remove_extension(file_name)
-    sanitized_filename = slugify(base_file_name)
-    download_filename = slugify(os.path.splitext(file_link.split('/')[-1])[0])
+def download_file(file_link, standardized_file_name, max_retries=10):
     extension = get_file_extension(file_link, {})
-    final_filename = f"{sanitized_filename}-{download_filename}{extension}"
-    file_path = os.path.join('files', final_filename)
+    standardized_file_name_with_extension = f"{standardized_file_name}{extension}"
+    file_path = os.path.join('files', standardized_file_name_with_extension)
 
-    if len(file_path) > 255:
-        print(f"File path too long: {file_path}")
-        final_filename = f"{sanitized_filename[:50]}-{download_filename[:50]}{extension}"
-        file_path = os.path.join('files', final_filename)
+    # Ensure the filename does not exceed 250 characters
+    if len(file_path) > 250:
+        max_filename_length = 250 - len(os.path.join('files', '')) - len(extension)
+        standardized_file_name_with_extension = f"{standardized_file_name[:max_filename_length]}{extension}"
+        file_path = os.path.join('files', standardized_file_name_with_extension)
+
+    # Add random characters to avoid filename conflicts
+    file_path = add_random_chars(file_path)
 
     if os.path.exists(file_path):
-        print(f"File already exists: {final_filename}. Skipping download.")
+        print(f"File already exists: {standardized_file_name_with_extension}. Skipping download.")
         return True
 
     attempts = 0
@@ -48,33 +49,31 @@ def download_file(file_link, file_name, max_retries=3):
             if response.status_code == 200:
                 with open(file_path, 'wb') as f:
                     f.write(response.content)
-                print(f"Downloaded: {final_filename}")
                 return True
             else:
-                print(f"Failed to download: {file_name} from {file_link} (status code: {response.status_code})")
+                print(f"Failed to download: {standardized_file_name_with_extension} from {file_link} (status code: {response.status_code})")
         except Exception as e:
-            print(f"Error downloading {file_name} from {file_link}: {e}")
+            print(f"Error downloading {standardized_file_name_with_extension} from {file_link}: {e}")
         attempts += 1
 
     unsuccessful_downloads.append({
-        "file_name": file_name,
+        "standardized_file_name": standardized_file_name,
         "file_link": file_link
     })
     return False
 
-
 if __name__ == "__main__":
-  os.makedirs('files', exist_ok=True)
+    os.makedirs('files', exist_ok=True)
 
-  df = pd.read_csv(DATA_FILE_PATH)
-  unsuccessful_downloads = []
+    df = pd.read_csv(DATA_FINAL_PATH)
+    unsuccessful_downloads = []
 
-  for index, row in df.iterrows():
-      download_file(row['file_link'], row['file_name'])
+    for index, row in df.iterrows():
+        download_file(row['file_link'], row['standardized_file_name'])
 
-  unsuccessful_df = pd.DataFrame(unsuccessful_downloads)
-  unsuccessful_df.to_csv(UNSUCCESSFUL_DOWNLOADS_PATH, index=False)
+    unsuccessful_df = pd.DataFrame(unsuccessful_downloads)
+    unsuccessful_df.to_csv(UNSUCCESSFUL_DOWNLOADS_PATH, index=False)
 
-  print("Unsuccessful Downloads:")
-  for file in unsuccessful_downloads:
-      print(file["file_link"])
+    print("Unsuccessful Downloads:")
+    for file in unsuccessful_downloads:
+        print(file["file_link"])
