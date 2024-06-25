@@ -71,7 +71,8 @@ def sanitize_filenames():
     for row in rows:
         try:
             # Extract necessary fields
-            title = row['title']
+            title = row['filename']
+            title = title.replace(' -- ', '_')
             title = re.sub(r'[./\- ,()]+', '_', title)
             jenis_regulasi = row['jenis_regulasi'].lower()
             jenis_regulasi = re.sub(r'[./\- ,()]+', '_', jenis_regulasi)
@@ -90,7 +91,7 @@ def sanitize_filenames():
             new_filename = re.sub(r'[\\/*?:"<>.|]', '', new_filename)
 
             # Ensure the filename is not too long
-            maxlen = 255 - len(ext)  # Max filename length in Windows
+            maxlen = 250 - len(ext)  # Max filename length in Windows
             if len(new_filename) > maxlen:
                 new_filename = new_filename[:maxlen]
 
