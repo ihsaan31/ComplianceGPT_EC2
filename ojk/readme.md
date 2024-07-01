@@ -69,10 +69,10 @@ python main.py
 You can see the result of document files in [here](https://drive.google.com/file/d/1VDX8MgyRVXNVGcB-plpaSoEcPGqUUqIw/view?usp=sharing).
 
 ## Utilities
-1. `setup_driver.py` : Setup the chrome driver for scraping
-2. `table_scraper.py` : Scraping the regulation table from the website [OJK](https://www.ojk.go.id/id/Regulasi/Default.aspx)
-3. `document_scraper.py` : Scraping and download the document from the website
-4. `filename_sanitizer.py` : Sanitize the filename of the downloaded document
+1. `setup_driver.py` : Setup the chrome driver for scraping.
+2. `table_scraper.py` : Scraping the regulation table from the website [OJK].(https://www.ojk.go.id/id/Regulasi/Default.aspx)
+3. `document_scraper.py` : Scraping and download the document from the website.
+4. `filename_sanitizer.py` : Sanitize the filename of the downloaded document.
 
 ## Documentation
 

@@ -39,10 +39,11 @@ The scripts provided below allows users to scrape all regulations from Bank Indo
 ├── utils/
 │   ├── constants.py
 │   └── utils.py
+├── metadata/
+│   └── *.json
 ├── *.py
 ├── *.ipynb
 ├── README.md
-├── metadata.json
 └── requirements.txt
 ```
 
