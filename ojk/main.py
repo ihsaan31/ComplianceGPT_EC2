@@ -1,3 +1,4 @@
+from utils.check_ocr import add_ocr_column_to_csv, copy_scanned_pdfs, list_scanned_pdfs
 from utils.filename_sanitizer import sanitize_filenames
 from utils.table_scraper import scrape_all_pages
 from utils.document_scraper import download_documents
@@ -23,9 +24,13 @@ def main():
     # print("Downloading of documents completed.")
 
     # change filename
-    print("Changing filename...")
-    sanitize_filenames()
-    print("Changing filename completed.")
+    # print("Changing filename...")
+    # sanitize_filenames()
+    # print("Changing filename completed.")
+
+    print("Scanned PDF files:")
+    add_ocr_column_to_csv()
+    copy_scanned_pdfs()
     
 
 

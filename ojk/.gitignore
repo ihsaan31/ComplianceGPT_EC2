@@ -3,5 +3,7 @@ Scripts
 Lib/
 data/
 data_sanitized/
+data_scanned_pdf/
 *.exe
 __pycache__/
+id_rsa_project_crayon 1

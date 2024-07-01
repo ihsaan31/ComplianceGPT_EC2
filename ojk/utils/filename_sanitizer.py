@@ -8,7 +8,7 @@ from dateutil import parser
 import locale
 
 # Setup locale to Indonesian for date parsing
-locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
+# locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
 
 # Setup logging
 logging.basicConfig(filename='./log/filename_sanitizer.log', level=logging.INFO,
