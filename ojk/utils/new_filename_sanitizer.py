@@ -11,24 +11,38 @@ import locale
 # locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
 
 # Setup logging
-logging.basicConfig(filename='./log/filename_sanitizer.log', level=logging.INFO,
+logging.basicConfig(filename='./log/filename_sanitizer_new.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def convert_date_format(input_date):
     # Define a mapping of Indonesian month names to their numerical equivalents
     month_mapping = {
-        'januari': '01',
-        'februari': '02',
-        'maret': '03',
-        'april': '04',
-        'mei': '05',
-        'juni': '06',
-        'juli': '07',
-        'agustus': '08',
-        'september': '09',
-        'oktober': '10',
-        'november': '11',
-        'desember': '12'
+        'Januari': '01',
+        'Jan': '01',
+        'Februari': '02',
+        'Feb': '02',
+        'Maret': '03',
+        'Mar': '03',
+        'April': '04',
+        'Apr': '04',
+        'Mei': '05',
+        'May': '05',
+        'Juni': '06',
+        'Jun': '06',
+        'Juli': '07',
+        'Jul': '07',
+        'Juliy': '07',
+        'Agustus': '08',
+        'Aug': '08',
+        'September': '09',
+        'Sep': '09',
+        'Oktober': '10',
+        'Oct': '10',
+        'November': '11',
+        'Nov': '11',
+        'Desember': '12',
+        'Dec': '12',
+        'Desemberember': '12',
     }
 
     # Split the input_date by space to extract day, month, and year
@@ -45,12 +59,12 @@ def convert_date_format(input_date):
 
     return formatted_date
 
-def sanitize_filenames():
+def sanitize_filenames_new():
     # Paths
-    source_csv = './log/ojk_document_scraping_result.csv'
-    log_csv = './log/ojk_document_sanitizing_result.csv'
-    source_dir = './data'
-    destination_dir = './data_sanitized'
+    source_csv = './log/ojk_document_scraping_result_new_final.csv'
+    log_csv = './log/ojk_document_sanitizing_result_new_final.csv'
+    source_dir = './data_new_backup'
+    destination_dir = './data_sanitized_backup'
 
     # Create destination directory if not exists
     os.makedirs(destination_dir, exist_ok=True)

@@ -6,7 +6,6 @@ import time
 
 from utils.setup_driver import setup_driver
 
-
 def scrape_page(driver):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     rows = soup.find_all('tr', id='table-content')
