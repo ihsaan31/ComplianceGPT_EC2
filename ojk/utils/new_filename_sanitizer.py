@@ -63,8 +63,8 @@ def sanitize_filenames_new():
     # Paths
     source_csv = './log/ojk_document_scraping_result_new_final.csv'
     log_csv = './log/ojk_document_sanitizing_result_new_final.csv'
-    source_dir = './data_new_backup'
-    destination_dir = './data_sanitized_backup'
+    source_dir = './data_new'
+    destination_dir = './data_sanitized_final'
 
     # Create destination directory if not exists
     os.makedirs(destination_dir, exist_ok=True)

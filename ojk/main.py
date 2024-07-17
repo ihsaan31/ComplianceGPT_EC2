@@ -28,19 +28,20 @@ def main():
     # print("Downloading of documents completed.")
 
     # Extract zip files
-    # df_zip = pd.read_csv('./log/ojk_document_scraping_result_new_backup.csv')
+    # df_zip = pd.read_csv('./log/ojk_document_scraping_result_new.csv')
     # print("Starting to extract zip files...")
     # process_zip_files(df_zip)
     # print("Extraction of zip files completed.")
 
     # change filename
-    print("Changing filename...")
-    sanitize_filenames_new()
-    print("Changing filename completed.")
+    # print("Changing filename...")
+    # sanitize_filenames_new()
+    # print("Changing filename completed.")
 
     # print("Scanned PDF files:")
     # add_ocr_column_to_csv()
     # copy_scanned_pdfs()
+    print("kosong")
     
 
 

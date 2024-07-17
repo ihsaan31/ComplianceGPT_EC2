@@ -25,8 +25,8 @@ def extract_zip(zip_path, extract_dir):
     
 def process_zip_files(df):
     document_data = []
-    download_dir = './data_new_backup'
-    output_csv = './log/ojk_document_scraping_result_new_backup.csv'
+    download_dir = './data_new'
+    output_csv = './log/ojk_document_scraping_result_new.csv'
 
     # Load existing document data if the CSV file exists
     if os.path.exists(output_csv):
