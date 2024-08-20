@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td>4.</td>
-        <td>Bryan Deltor</td>
+        <td>Bryan Delton T S</td>
         <td>Chinese University of Hong Kong, Shenzhen</td>
         <td><a href="mailto:bryandelton.ocbc@gmail.com">bryandelton.ocbc@gmail.com</a></td>
     </tr>
@@ -50,7 +50,7 @@
         <td>5.</td>
         <td>Ihsan Fathiya</td>
         <td>Gunadarma University</td>
-        <td><a href="ihsanfathya.ocbc@yahoo.com">ihsanfathya.ocbc@yahoo.com</a></td>
+        <td><a href="mailto:ihsanfathya.ocbc@yahoo.com">ihsanfathya.ocbc@yahoo.com</a></td>
     </tr>
 </table>
 </p>
@@ -62,28 +62,28 @@
 Here's an overview of the main folders and files in this repository:
 
 ```plaintext
-├── chain/
-│   ├── chain_bi/
-│   ├── chain_ojk/
-│   ├── chain_sikepo/
-│   ├── chain_routing.py
-│   └── rag_chain.py
-├── constant/
+├── chain/                    
+│   ├── chain_bi/             
+│   ├── chain_ojk/           
+│   ├── chain_sikepo/         
+│   ├── chain_routing.py     
+│   └── rag_chain.py        
+├── constant/                
 │   ├── bi/
 │   ├── evaluation/
 │   ├── ojk/
 │   ├── sikepo/
 │   └── prompt.py
-├── database/
+├── database/                
 │   ├── store_logs/
 │   ├── vector_store/
 │   └── chat_store.py
-├── retriever/
+├── retriever/               
 │   ├── retriever_bi/
 │   ├── retriever_ojk/
 │   ├── retriever_sikepo/
 │   └── self_query.py
-├── scraping/
+├── scraping/                
 ├── utils/
 ├── evaluation.ipynb
 ├── main.py
@@ -100,7 +100,7 @@ Here's an overview of the main folders and files in this repository:
 
 - **constant/**: Stores constant files (prompt) and configurations for BI, OJK, SIKEPO, and evaluation results.
 
-- **database/**: Manages data storage, including logs, vector storage, and retrieval systems.
+- **database/**: Manages data storage, including logs, chat history, and vector database.
   - **vector_store/**: Contains files related to vector and graph storage.
   - **store_logs/**: Contains files related to logs when storing vector databases.
   - `chat_store.py`: Handle the abstraction for chat message history
@@ -130,13 +130,13 @@ Here's an overview of the main folders and files in this repository:
    ```bash
    pip install -r requirements.txt
    ```
-
 <br>
 
 ## **Usage**
 
-1. **Start the API**  
-   Launch the API with the following command:  
+1. **Start the API** <br>
+   Launch the API with the following command:
+   
    ```bash
    uvicorn main:app --reload
    ```
