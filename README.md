@@ -18,15 +18,15 @@
     </tr>
     <tr>
         <td>No.</td>
-        <td>Nama</td>
-        <td>Kampus</td>
+        <td>Name</td>
+        <td>University</td>
         <td>Email</td>
     </tr>
     <tr>
         <td>1.</td>
         <td>Abraham Megantoro</td>
         <td>Insitut Teknologi Bandung</td>
-        <td><a href="mailto:xxx">xxx</a></td>
+        <td><a href="mailto:abrahams.ocbc@gmail.com">abrahams.ocbc@gmail.com</a></td>
     </tr>
     <tr>
         <td>2.</td>
@@ -38,19 +38,19 @@
         <td>3.</td>
         <td>Arkan Alexei</td>
         <td>Universitas Indonesia</td>
-        <td><a href="mailto:xxx">xxx</a></td>
+        <td><a href="mailto:arkan.ocbc@gmail.com">arkan.ocbc@gmail.com</a></td>
     </tr>
     <tr>
         <td>4.</td>
         <td>Bryan Deltor</td>
-        <td>Chinese University of Hong Kong</td>
-        <td><a href="xxx">xx</a></td>
+        <td>Chinese University of Hong Kong, Shenzhen</td>
+        <td><a href="mailto:bryandelton.ocbc@gmail.com">bryandelton.ocbc@gmail.com</a></td>
     </tr>
     <tr>
         <td>5.</td>
         <td>Ihsan Fathiya</td>
         <td>Universitas Gunadarma</td>
-        <td><a href="xxx">xxx</a></td>
+        <td><a href="ihsanfathya.ocbc@yahoo.com">ihsanfathya.ocbc@yahoo.com</a></td>
     </tr>
 </table>
 </p>
@@ -63,11 +63,23 @@
 <br>
 
 ## **How to Run**
-1. Clone repository ini</br>
-```bash
-    git clone https://github.com/bryandts7/ocbc_compliance_gpt.git
-```
 
-2. xxx
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/taytb/chatbot-be.git
+   ```
+
+2. **Install Dependencies**  
+   Ensure you're using Python 3.9.19, then install the required packages:  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Start the API**  
+   Launch the API with the following command:  
+   ```bash
+   uvicorn main:app --reload
+   ```
+
 
 <br>
