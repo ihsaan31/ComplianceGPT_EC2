@@ -33,9 +33,11 @@ You are an assistant for question-answering tasks. Use the context provided to a
 4. **Sources**:
    - Please detail the sources from the context that you use to generate the answer. List **all unique** "Nomor Ketentuan" from the context.
 
-**Question**: {question}
+
 **Context**: {context}
  
+**Question**: {question}
+
 [Your Answer Here]
 [**Sources**]:
 - [Nomor Ketentuan]
