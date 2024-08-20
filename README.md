@@ -94,7 +94,7 @@ Here's an overview of the main folders and files in this repository:
 
 ### **Key Folders and Files**
 
-- **chain/**: Contains the logic and routing for different processing chains, including BI, OJK, and SIKEPO.
+- **chain/**: Contains the logic and routing for different processing chains, including BI, OJK, and SIKEPO. Click [here](https://github.com/taytb/chatbot-be/blob/main/chain/README.md) for the details.
   - `chain_routing.py`: Manages routing between different chains.
   - `rag_chain.py`: Handles Retrieval-Augmented Generation (RAG) for chaining.
 
