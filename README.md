@@ -25,19 +25,19 @@
     <tr>
         <td>1.</td>
         <td>Abraham Megantoro</td>
-        <td>Insitut Teknologi Bandung</td>
+        <td>Bandung Institute of Technology</td>
         <td><a href="mailto:abrahams.ocbc@gmail.com">abrahams.ocbc@gmail.com</a></td>
     </tr>
     <tr>
         <td>2.</td>
         <td>Ahmad Rizki</td>
-        <td>Insitut Teknologi Bandung</td>
+        <td>Bandung Institute of Technology</td>
         <td><a href="mailto:ahmadr.ocbc@gmail.com">ahmadr.ocbc@gmail.com</a></td>
     </tr>
     <tr>
         <td>3.</td>
         <td>Arkan Alexei</td>
-        <td>Universitas Indonesia</td>
+        <td>University of Indonesia</td>
         <td><a href="mailto:arkan.ocbc@gmail.com">arkan.ocbc@gmail.com</a></td>
     </tr>
     <tr>
@@ -49,7 +49,7 @@
     <tr>
         <td>5.</td>
         <td>Ihsan Fathiya</td>
-        <td>Universitas Gunadarma</td>
+        <td>Gunadarma University</td>
         <td><a href="ihsanfathya.ocbc@yahoo.com">ihsanfathya.ocbc@yahoo.com</a></td>
     </tr>
 </table>
@@ -57,12 +57,68 @@
 
 <br>
 
-## **Specification and Booklet**
-- xxx
+## **Folder Structure**
+
+Here's an overview of the main folders and files in this repository:
+
+```plaintext
+├── chain/
+│   ├── chain_bi/
+│   ├── chain_ojk/
+│   ├── chain_sikepo/
+│   ├── chain_routing.py
+│   └── rag_chain.py
+├── constant/
+│   ├── bi/
+│   ├── evaluation/
+│   ├── ojk/
+│   ├── sikepo/
+│   └── prompt.py
+├── database/
+│   ├── store_logs/
+│   ├── vector_store/
+│   └── chat_store.py
+├── retriever/
+│   ├── retriever_bi/
+│   ├── retriever_ojk/
+│   ├── retriever_sikepo/
+│   └── self_query.py
+├── scraping/
+├── utils/
+├── evaluation.ipynb
+├── main.py
+└── main_storing_ojk.ipynb
+```
 
 <br>
 
-## **How to Run**
+### **Key Folders and Files**
+
+- **chain/**: Contains the logic and routing for different processing chains, including BI, OJK, and SIKEPO.
+  - `chain_routing.py`: Manages routing between different chains.
+  - `rag_chain.py`: Handles Retrieval-Augmented Generation (RAG) for chaining.
+
+- **constant/**: Stores constant files (prompt) and configurations for BI, OJK, SIKEPO, and evaluation results.
+
+- **database/**: Manages data storage, including logs, vector storage, and retrieval systems.
+  - **vector_store/**: Contains files related to vector and graph storage.
+  - **store_logs/**: Contains files related to logs when storing vector databases.
+  - `chat_store.py`: Handle the abstraction for chat message history
+    
+- **retriever/**: Scripts for data retrieval from the vector database specific to BI, OJK, and SIKEPO.
+
+- **scraping/**: Includes scripts for web scraping and data extraction.
+
+- **utils/**: Utility scripts for tasks like document extraction and configuration management.
+
+- ``evaluation.ipynb``: Notebooks related to the evaluation process.
+
+- ``main.py``: The primary script for running the project.
+
+
+<br>
+
+## **Installation**
 
 1. **Clone the Repository**  
    ```bash
@@ -75,11 +131,15 @@
    pip install -r requirements.txt
    ```
 
-3. **Start the API**  
+<br>
+
+## **Usage**
+
+1. **Start the API**  
    Launch the API with the following command:  
    ```bash
    uvicorn main:app --reload
    ```
 
-
 <br>
+
