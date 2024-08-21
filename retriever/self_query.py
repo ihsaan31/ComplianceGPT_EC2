@@ -38,7 +38,7 @@ def self_query(llm_model: BaseLanguageModel, vector_store: VectorStore, document
         query_constructor=query_constructor,
         vectorstore=vector_store,
         search_type=search_type,
-        search_kwargs={'k': top_k, 'lambda_mult': 0.75, 'fetch_k': 40}
+        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40}
     )
 
     return retriever

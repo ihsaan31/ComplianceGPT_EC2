@@ -40,7 +40,7 @@ def lotr_sikepo(vector_store: VectorStore, llm_model: BaseLanguageModel, embed_m
     # remove redundant documents
     filter = EmbeddingsRedundantFilter(embeddings=embed_model)
     reordering = LongContextReorder()
-    pipeline = DocumentCompressorPipeline(transformers=[filter, reordering])
+    pipeline = DocumentCompressorPipeline(transformers=[filter])
     compression_retriever = ContextualCompressionRetriever(
         base_compressor=pipeline, base_retriever=lotr
     )
