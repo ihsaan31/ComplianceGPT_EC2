@@ -50,7 +50,7 @@ def initialize_global_variables():
                                        llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
     best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
     # efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
-    efficient_llm, temp = get_model(model_name=ModelName.OPENAI, config=config,
+    efficient_llm, _ = get_model(model_name=ModelName.OPENAI, config=config,
                                        llm_model_name=LLMModelName.GPT_4O_MINI, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
     llm_model = efficient_llm
     best_llm = efficient_llm
