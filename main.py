@@ -1,10 +1,9 @@
 import nest_asyncio
 import warnings
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, Query
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import Query
 
 from pydantic import BaseModel
 
@@ -39,67 +38,68 @@ logger = logging.getLogger(__name__)
 security = HTTPBearer()
 config = get_config()
 
-# =========== MODEL ===========
-llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=config,
-                                    llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
-best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
-efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
-top_k = 12
+# =========== GLOBAL VARIABLES ===========
+def initialize_global_variables():
+    global llm_model, embed_model, best_llm, efficient_llm, retriever_ojk, retriever_bi, retriever_sikepo_ket, retriever_sikepo_rek, chain, chain_history, top_k, chat_store
+    global vector_store_ojk, vector_store_bi, vector_store_ket, vector_store_rek, graph
+    global model
 
-# =========== DATABASE ===========
-index_ojk = ElasticIndexManager(
-    index_name='ojk', embed_model=embed_model, config=config)
-index_bi = ElasticIndexManager(
-    index_name='bi', embed_model=embed_model, config=config)
-index_sikepo_ket = ElasticIndexManager(
-    index_name='sikepo-ketentuan-terkait', embed_model=embed_model, config=config)
-index_sikepo_rek = ElasticIndexManager(
-    index_name='sikepo-rekam-jejak', embed_model=embed_model, config=config)
+    # =========== MODEL INITIALIZATION ===========
+    model = 'Quality'
+    llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=config,
+                                       llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
+    best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
+    efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
+    top_k = 12
 
-vector_store_ojk = index_ojk.load_vector_index()
-vector_store_bi = index_bi.load_vector_index()
-vector_store_ket = index_sikepo_ket.load_vector_index()
-vector_store_rek = index_sikepo_rek.load_vector_index()
+    # =========== DATABASE INITIALIZATION ===========
+    index_ojk = ElasticIndexManager(index_name='ojk', embed_model=embed_model, config=config)
+    index_bi = ElasticIndexManager(index_name='bi', embed_model=embed_model, config=config)
+    index_sikepo_ket = ElasticIndexManager(index_name='sikepo-ketentuan-terkait', embed_model=embed_model, config=config)
+    index_sikepo_rek = ElasticIndexManager(index_name='sikepo-rekam-jejak', embed_model=embed_model, config=config)
 
-neo4j_sikepo = Neo4jGraphStore(config=config)
-graph = neo4j_sikepo.get_graph()
+    vector_store_ojk = index_ojk.load_vector_index()
+    vector_store_bi = index_bi.load_vector_index()
+    vector_store_ket = index_sikepo_ket.load_vector_index()
+    vector_store_rek = index_sikepo_rek.load_vector_index()
 
-chat_store = ElasticChatStore(k=4, config=config)
+    neo4j_sikepo = Neo4jGraphStore(config=config)
+    graph = neo4j_sikepo.get_graph()
 
+    chat_store = ElasticChatStore(k=4, config=config)
 
-# =========== RETRIEVER ===========
-retriever_ojk = get_retriever_ojk(vector_store=vector_store_ojk, top_k=top_k,
-                                  llm_model=efficient_llm, embed_model=embed_model, config=config)
-retriever_bi = get_retriever_bi(vector_store=vector_store_bi, top_k=top_k,
-                                llm_model=efficient_llm, embed_model=embed_model, config=config)
-retriever_sikepo_ket = lotr_sikepo(vector_store=vector_store_ket, top_k=top_k,
-                                   llm_model=efficient_llm, embed_model=embed_model, config=config)
-retriever_sikepo_rek = lotr_sikepo(vector_store=vector_store_rek, top_k=top_k,
-                                   llm_model=efficient_llm, embed_model=embed_model, config=config)
+    # =========== RETRIEVER INITIALIZATION ===========
+    retriever_ojk = get_retriever_ojk(vector_store=vector_store_ojk, top_k=top_k,
+                                      llm_model=efficient_llm, embed_model=embed_model, config=config)
+    retriever_bi = get_retriever_bi(vector_store=vector_store_bi, top_k=top_k,
+                                    llm_model=efficient_llm, embed_model=embed_model, config=config)
+    retriever_sikepo_ket = lotr_sikepo(vector_store=vector_store_ket, top_k=top_k,
+                                       llm_model=efficient_llm, embed_model=embed_model, config=config)
+    retriever_sikepo_rek = lotr_sikepo(vector_store=vector_store_rek, top_k=top_k,
+                                       llm_model=efficient_llm, embed_model=embed_model, config=config)
 
+    # =========== CHAIN INITIALIZATION ===========
+    graph_chain = graph_rag_chain(best_llm, llm_model, graph=graph)
+    chain = create_combined_answer_chain(
+        llm_model=llm_model,
+        graph_chain=graph_chain,
+        retriever_ojk=retriever_ojk,
+        retriever_bi=retriever_bi,
+        retriever_sikepo_ketentuan=retriever_sikepo_ket,
+        retriever_sikepo_rekam=retriever_sikepo_rek,
+        best_llm=best_llm,
+        efficient_llm=efficient_llm
+    )
 
-# =========== CHAIN ===========
-graph_chain = graph_rag_chain(best_llm, llm_model, graph=graph)
-chain = create_combined_answer_chain(
-    llm_model=llm_model,
-    graph_chain=graph_chain,
-    retriever_ojk=retriever_ojk,
-    retriever_bi=retriever_bi,
-    retriever_sikepo_ketentuan=retriever_sikepo_ket,
-    retriever_sikepo_rekam=retriever_sikepo_rek,
-    best_llm=best_llm,
-    efficient_llm=efficient_llm
-)
-
-
-# =========== CHAIN HISTORY ===========
-chain_history = create_chain_with_chat_history(
-    final_chain=chain,
-    chat_store=chat_store,
-)
+    # =========== CHAIN HISTORY INITIALIZATION ===========
+    chain_history = create_chain_with_chat_history(
+        final_chain=chain,
+        chat_store=chat_store,
+    )
 
 
 # =========== FASTAPI APP ===========
+initialize_global_variables()
 app = FastAPI()
 
 app.add_middleware(
@@ -138,42 +138,52 @@ class ModelRequest(BaseModel):
     model: str
 
 
-# =========== ENDPOINT ===========
+# =========== ENDPOINTS ===========
+@app.get("/api/initialize_model/")
+async def get_model_info():
+    return JSONResponse(
+        status_code=200,
+        content={"message": "Model and parameters initialized successfully", "model": model, "top_k": top_k}
+    )
+
 @app.post("/api/initialize_model/")
 async def initialize_model(request: ModelRequest):
-    global llm_model, embed_model, best_llm, efficient_llm, retriever_ojk, retriever_bi, retriever_sikepo_ket, retriever_sikepo_rek, chain, chain_history, top_k
+    global llm_model, embed_model, best_llm, efficient_llm, retriever_ojk, retriever_bi, retriever_sikepo_ket, retriever_sikepo_rek, chain, chain_history, top_k, chat_store
+    global vector_store_ojk, vector_store_bi, vector_store_ket, vector_store_rek, graph
+    global model
 
     try:
-        model = request.model
-        logger.info(f"Received model: {model}")
-        
+        model_type = request.model
+        model = model_type
+        logger.info(f"Received model: {model_type}")
+
+        # Initialize models based on the requested type
         llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=config,
-                                               llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
+                                           llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
         best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
         efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
 
-        if model == 'Quality':
+        if model_type == 'Quality':
             top_k = 12
-
-        elif model == 'Speed':
+        elif model_type == 'Speed':
             top_k = 8
         else:
             raise HTTPException(status_code=400, detail="Invalid model specified")
 
         # Reinitialize retrievers with the new model and top_k
         retriever_ojk = get_retriever_ojk(vector_store=vector_store_ojk, top_k=top_k,
-                                  llm_model=efficient_llm, embed_model=embed_model, config=config)
+                                          llm_model=efficient_llm, embed_model=embed_model, config=config)
         retriever_bi = get_retriever_bi(vector_store=vector_store_bi, top_k=top_k,
                                         llm_model=efficient_llm, embed_model=embed_model, config=config)
         retriever_sikepo_ket = lotr_sikepo(vector_store=vector_store_ket, top_k=top_k,
-                                        llm_model=efficient_llm, embed_model=embed_model, config=config)
+                                           llm_model=efficient_llm, embed_model=embed_model, config=config)
         retriever_sikepo_rek = lotr_sikepo(vector_store=vector_store_rek, top_k=top_k,
-                                        llm_model=efficient_llm, embed_model=embed_model, config=config)
+                                           llm_model=efficient_llm, embed_model=embed_model, config=config)
+
         graph_chain = graph_rag_chain(llm_model, llm_model, graph=graph)
 
         # Reinitialize the chain with the new retrievers
-
-        if model == 'Quality':
+        if model_type == 'Quality':
             chain = create_combined_answer_chain(
                 llm_model=llm_model,
                 graph_chain=graph_chain,
@@ -185,12 +195,7 @@ async def initialize_model(request: ModelRequest):
                 efficient_llm=efficient_llm
             )
 
-            chain_history = create_chain_with_chat_history(
-                final_chain=chain,
-                chat_store=chat_store,
-            )
-
-        elif model == 'Speed':
+        elif model_type == 'Speed':
             chain = create_combined_context_chain(
                 llm_model=llm_model,
                 graph_chain=graph_chain,
@@ -201,16 +206,18 @@ async def initialize_model(request: ModelRequest):
                 best_llm=best_llm,
                 efficient_llm=efficient_llm
             )
-            chain_history = create_chain_with_chat_history(
-                final_chain=chain,
-                chat_store=chat_store,
-            )
+
+        # Update the chain history
+        chain_history = create_chain_with_chat_history(
+            final_chain=chain,
+            chat_store=chat_store,
+        )
 
         return JSONResponse(
             status_code=200,
             content={
                 "message": "Model and parameters updated successfully",
-                "model": model,
+                "model": model_type,
                 "top_k": top_k
             }
         )
@@ -355,5 +362,6 @@ async def delete_all_user_chats(credentials: HTTPAuthorizationCredentials = Depe
 
 # =========== MAIN ===========
 if __name__ == "__main__":
+    initialize_global_variables()
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=9898)
