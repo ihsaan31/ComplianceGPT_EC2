@@ -49,8 +49,12 @@ def initialize_global_variables():
     llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=config,
                                        llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
     best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
-    efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
-    top_k = 12
+    # efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
+    efficient_llm, temp = get_model(model_name=ModelName.OPENAI, config=config,
+                                       llm_model_name=LLMModelName.GPT_4O_MINI, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
+    llm_model = efficient_llm
+    best_llm = efficient_llm
+    top_k = 15
 
     # =========== DATABASE INITIALIZATION ===========
     index_ojk = ElasticIndexManager(index_name='ojk', embed_model=embed_model, config=config)
@@ -157,14 +161,8 @@ async def initialize_model(request: ModelRequest):
         model = model_type
         logger.info(f"Received model: {model_type}")
 
-        # Initialize models based on the requested type
-        llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=config,
-                                           llm_model_name=LLMModelName.GPT_AZURE, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
-        best_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
-        efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
-
         if model_type == 'Quality':
-            top_k = 12
+            top_k = 15
         elif model_type == 'Speed':
             top_k = 8
         else:
