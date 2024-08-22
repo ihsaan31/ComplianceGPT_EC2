@@ -55,7 +55,7 @@ top_k_speed = 8
 index_ojk = ElasticIndexManager(
     index_name='ojk', embed_model=embed_model, config=config)
 index_bi = ElasticIndexManager(
-    index_name='bi', embed_model=embed_model, config=config)
+    index_name='bi-new', embed_model=embed_model, config=config)
 index_sikepo_ket = ElasticIndexManager(
     index_name='sikepo-ketentuan-terkait', embed_model=embed_model, config=config)
 index_sikepo_rek = ElasticIndexManager(
