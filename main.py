@@ -104,7 +104,7 @@ chain_quality = create_combined_answer_chain(
     efficient_llm=efficient_llm
 )
 
-chain_speed = create_combined_answer_chain(
+chain_speed = create_combined_context_chain(
     llm_model=llm_model,
     graph_chain=graph_chain,
     retriever_ojk=retreiver_ojk_speed,
