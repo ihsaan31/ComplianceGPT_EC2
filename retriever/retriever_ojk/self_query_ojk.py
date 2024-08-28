@@ -8,6 +8,7 @@ from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_core.vectorstores import VectorStore
 
 from retriever.self_query import self_query
+from constant.prefilter import FILTER_OJK as filter_dict
 
 # Define metadata field information
 metadata_field_info = [
@@ -28,5 +29,5 @@ document_content_description = "The content of the document"
 
 
 # Create query constructor
-def self_query_ojk(llm_model: BaseLanguageModel, vector_store: VectorStore, search_type: str = "similarity") -> SelfQueryRetriever:
-    return self_query(llm_model, vector_store, document_content_description, metadata_field_info, search_type=search_type)
+def self_query_ojk(llm_model: BaseLanguageModel, vector_store: VectorStore, search_type: str = "similarity", top_k:int = 8) -> SelfQueryRetriever:
+    return self_query(llm_model, vector_store, document_content_description, metadata_field_info, search_type=search_type, top_k=top_k, filter = filter_dict)

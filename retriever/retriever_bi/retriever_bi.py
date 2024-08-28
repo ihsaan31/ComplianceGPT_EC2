@@ -11,7 +11,7 @@ from langchain_core.language_models.base import BaseLanguageModel
 from langchain_core.vectorstores import VectorStore
 from langchain_core.runnables import RunnableLambda
 from retriever.retriever_sikepo.lotr_sikepo import to_documents
-
+from constant.prefilter import FILTER_BI as filter_dict
 
 # all_documents_file = gzip.open(f'retriever/retriever_bi/all_documents.pkl.gz','rb')
 # all_documents = pickle.load(all_documents_file)
@@ -21,11 +21,11 @@ def get_retriever_bi(vector_store: VectorStore, llm_model: BaseLanguageModel, em
 
     retriever_similarity = vector_store.as_retriever(
         search_type="similarity",
-        search_kwargs={'k': top_k}
+        search_kwargs={'k': top_k, 'filter': filter_dict}
     )
     retriever_mmr = vector_store.as_retriever(
         search_type="mmr",
-        search_kwargs={'k': top_k, 'lambda_mult': 0.85}
+        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'filter': filter_dict}
     )
 
     # merge retrievers

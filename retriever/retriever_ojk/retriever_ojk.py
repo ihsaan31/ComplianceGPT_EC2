@@ -17,6 +17,7 @@ from langchain_core.runnables import RunnableLambda
 
 from retriever.retriever_ojk.self_query_ojk import self_query_ojk
 from retriever.retriever_sikepo.lotr_sikepo import to_documents
+from constant.prefilter import FILTER_OJK as filter_dict
 
 def get_retriever_ojk(vector_store: VectorStore, llm_model: BaseLanguageModel, embed_model: Embeddings, top_k: int = 8, config: dict = {}, with_self_query: bool = True):
 
@@ -24,27 +25,29 @@ def get_retriever_ojk(vector_store: VectorStore, llm_model: BaseLanguageModel, e
         llm_model=llm_model,
         vector_store=vector_store,
         search_type="similarity",
+        top_k=top_k
     )
 
     retriever_self_query_mmr = self_query_ojk(
         llm_model=llm_model,
         vector_store=vector_store,
         search_type="mmr",
+        top_k=top_k
     )
 
     retriever_similarity = vector_store.as_retriever(
         search_type="similarity",
-        search_kwargs={'k': top_k}
+        search_kwargs={'k': top_k, 'filter': filter_dict}
     )
     retriever_mmr = vector_store.as_retriever(
         search_type="mmr",
-        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40}
+        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40, 'filter': filter_dict},
     )
 
     lotr = retriever_mmr
     # merge retrievers
     if with_self_query:
-        lotr = MergerRetriever(retrievers=[retriever_self_query_mmr, retriever_similarity])
+        lotr = MergerRetriever(retrievers=[retriever_self_query_mmr, retriever_mmr])
 
     # remove redundant documents
     filter = EmbeddingsRedundantFilter(embeddings=embed_model)

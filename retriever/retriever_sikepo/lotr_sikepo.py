@@ -17,7 +17,7 @@ from langchain_core.language_models.base import BaseLanguageModel
 from langchain_core.embeddings import Embeddings
 from langchain_community.document_transformers.embeddings_redundant_filter import _DocumentWithState
 from langchain_core.runnables import RunnableLambda
-
+from constant.prefilter import FILTER_SIKEPO as filter_dict
 from retriever.retriever_sikepo.self_query_sikepo import self_query_retriever_sikepo
 
 def to_documents(context: list[_DocumentWithState]):
@@ -25,16 +25,15 @@ def to_documents(context: list[_DocumentWithState]):
     return context_unique
 
 def lotr_sikepo(vector_store: VectorStore, llm_model: BaseLanguageModel, embed_model: Embeddings, config: dict = {}, top_k: int = 8, with_self_query: bool = True):
-
-    retriever_mmr = vector_store.as_retriever(search_type="mmr", search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40})
-    retriever_similarity = vector_store.as_retriever(search_type="similarity", search_kwargs={'k': top_k})
+    retriever_mmr = vector_store.as_retriever(search_type="mmr", search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40, 'filter':filter_dict})
+    retriever_similarity = vector_store.as_retriever(search_type="similarity", search_kwargs={'k': top_k, 'filter': filter_dict})
     self_query_retriever = self_query_retriever_sikepo(
-        llm_model=llm_model, vector_store=vector_store)
+        llm_model=llm_model, vector_store=vector_store, top_k=top_k, filter=filter_dict)
 
     lotr = retriever_mmr
     # merge retrievers
     if with_self_query:
-        lotr = MergerRetriever(retrievers=[self_query_retriever, retriever_similarity])
+        lotr = MergerRetriever(retrievers=[self_query_retriever, retriever_mmr])
 
 
     # remove redundant documents

@@ -43,10 +43,10 @@ llm_model, embed_model = get_model(model_name=ModelName.AZURE_OPENAI, config=con
 best_llm = get_azure_openai_llm(
     **config['config_azure_emb'], llm_model_name=LLMModelName.GPT_4O)
 efficient_llm = get_azure_openai_llm(**config['config_azure_emb'], llm_model_name=LLMModelName.GPT_35_TURBO)
-# efficient_llm, _ = get_model(model_name=ModelName.OPENAI, config=config,
-#                              llm_model_name=LLMModelName.GPT_4O_MINI, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
-# llm_model = efficient_llm
-# best_llm = efficient_llm
+efficient_llm, _ = get_model(model_name=ModelName.OPENAI, config=config,
+                             llm_model_name=LLMModelName.GPT_4O_MINI, embedding_model_name=EmbeddingModelName.EMBEDDING_3_SMALL)
+llm_model = efficient_llm
+best_llm = efficient_llm
 
 top_k_quality = 15
 top_k_speed = 8
@@ -104,7 +104,7 @@ chain_quality = create_combined_answer_chain(
     efficient_llm=efficient_llm
 )
 
-chain_speed = create_combined_answer_chain(
+chain_speed = create_combined_context_chain(
     llm_model=llm_model,
     graph_chain=graph_chain,
     retriever_ojk=retreiver_ojk_speed,

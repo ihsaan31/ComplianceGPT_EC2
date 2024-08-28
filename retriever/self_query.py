@@ -13,7 +13,7 @@ from langchain_community.query_constructors.elasticsearch import ElasticsearchTr
 from constant.prompt import DEFAULT_SCHEMA_PROMPT
 
 
-def self_query(llm_model: BaseLanguageModel, vector_store: VectorStore, document_content_description: str, metadata_field_info: Sequence[Union[AttributeInfo, dict]], search_type: str = "similarity", schema_prompt: BasePromptTemplate = DEFAULT_SCHEMA_PROMPT, top_k: int = 8) -> SelfQueryRetriever:
+def self_query(llm_model: BaseLanguageModel, vector_store: VectorStore, document_content_description: str, metadata_field_info: Sequence[Union[AttributeInfo, dict]], search_type: str = "similarity", schema_prompt: BasePromptTemplate = DEFAULT_SCHEMA_PROMPT, top_k: int = 8, filter = None) -> SelfQueryRetriever:
     es_translator = ElasticsearchTranslator()
     prompt = get_query_constructor_prompt(
         document_contents=document_content_description,
@@ -30,7 +30,7 @@ def self_query(llm_model: BaseLanguageModel, vector_store: VectorStore, document
         query_constructor=query_constructor,
         vectorstore=vector_store,
         search_type=search_type,
-        search_kwargs={'k': top_k}
+        search_kwargs={'k': top_k, 'filter': filter}
     )
 
     if search_type == "mmr":
@@ -38,7 +38,7 @@ def self_query(llm_model: BaseLanguageModel, vector_store: VectorStore, document
         query_constructor=query_constructor,
         vectorstore=vector_store,
         search_type=search_type,
-        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40}
+        search_kwargs={'k': top_k, 'lambda_mult': 0.85, 'fetch_k': 40, 'filter': filter}
     )
 
     return retriever
