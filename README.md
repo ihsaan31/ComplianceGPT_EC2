@@ -48,9 +48,9 @@
     </tr>
     <tr>
         <td>5.</td>
-        <td>Ihsan Fathiya</td>
+        <td>Ihsan Fathya</td>
         <td>Gunadarma University</td>
-        <td><a href="mailto:ihsanfathya.ocbc@yahoo.com">ihsanfathya.ocbc@yahoo.com</a></td>
+        <td><a href="mailto:ihsan.ihsan@ocbc.id">ihsanfathya.ocbc@yahoo.com</a></td>
     </tr>
 </table>
 </p>
