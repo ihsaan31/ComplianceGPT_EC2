@@ -50,7 +50,7 @@
         <td>5.</td>
         <td>Ihsan Fathya</td>
         <td>Gunadarma University</td>
-        <td><a href="mailto:ihsan.ihsan@ocbc.id">ihsanfathya.ocbc@yahoo.com</a></td>
+        <td><a href="mailto:ihsan.ihsan@ocbc.id">ihsan.ihsan@ocbc.id</a></td>
     </tr>
 </table>
 </p>
